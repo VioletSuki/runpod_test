@@ -1,0 +1,30 @@
+[
+  {
+    "name": "a40_1x",
+    "gpu_type": "A40",
+    "gpu_count": 1,
+    "template": "runpod-pytorch",
+    "notes": "single GPU minimal training"
+  },
+  {
+    "name": "rtx4090_1x",
+    "gpu_type": "RTX 4090",
+    "gpu_count": 1,
+    "template": "runpod-pytorch",
+    "notes": "single GPU minimal training"
+  },
+  {
+    "name": "h100_1x",
+    "gpu_type": "H100",
+    "gpu_count": 1,
+    "template": "runpod-pytorch",
+    "notes": "single GPU minimal training"
+  },
+  {
+    "name": "h100_4x",
+    "gpu_type": "H100",
+    "gpu_count": 4,
+    "template": "runpod-pytorch",
+    "notes": "future multi-GPU placeholder"
+  }
+]
