@@ -14,17 +14,10 @@
     "notes": "single GPU minimal training"
   },
   {
-    "name": "h100_1x",
+    "name": "rtx4000_Ada_1x",
     "gpu_type": "H100",
     "gpu_count": 1,
     "template": "runpod-pytorch",
     "notes": "single GPU minimal training"
-  },
-  {
-    "name": "h100_4x",
-    "gpu_type": "H100",
-    "gpu_count": 4,
-    "template": "runpod-pytorch",
-    "notes": "future multi-GPU placeholder"
   }
 ]

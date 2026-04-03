@@ -15,7 +15,25 @@ def save_checkpoint(config, payload):
     output_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_path = output_dir / config.get("checkpoint_name", "checkpoint.pt")
     torch.save(payload, checkpoint_path)
-    print(checkpoint_path)
+
+
+def build_train_params(config):
+    excluded_keys = {"output_dir", "checkpoint_name"}
+    return {key: value for key, value in config.items() if key not in excluded_keys}
+
+
+def emit_result(epoch, train_params, success):
+    print(
+        "OPENCLAW_RESULT_JSON="
+        + json.dumps(
+            {
+                "epoch": epoch,
+                "train_params": train_params,
+                "success": success,
+            },
+            separators=(",", ":"),
+        )
+    )
 
 
 def run_sft(config):
@@ -43,6 +61,7 @@ def run_sft(config):
             "steps": steps,
         },
     )
+    return 1
 
 
 def run_rl(config):
@@ -62,6 +81,7 @@ def run_rl(config):
             "score": score,
         },
     )
+    return 1
 
 
 def main():
@@ -71,15 +91,20 @@ def main():
 
     config = load_config(args.config)
     mode = config.get("mode", "sft")
+    train_params = build_train_params(config)
 
-    if mode == "sft":
-        run_sft(config)
-        return
-    if mode == "rl":
-        run_rl(config)
-        return
+    try:
+        if mode == "sft":
+            epoch = run_sft(config)
+        elif mode == "rl":
+            epoch = run_rl(config)
+        else:
+            raise ValueError(f"unsupported mode: {mode}")
 
-    raise ValueError(f"unsupported mode: {mode}")
+        emit_result(epoch, train_params, True)
+    except Exception:
+        emit_result(0, train_params, False)
+        raise
 
 
 if __name__ == "__main__":
